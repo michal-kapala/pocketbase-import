@@ -1,0 +1,3 @@
+id,name,is_good,score,email,json,date
+1,john,1,0.8412384213497,john.doe@example.com,[],2023-03-05T00:35:21.104Z
+2,fire,0,-80347329472,firebase@google.com,{"xd": "nice meme"},
