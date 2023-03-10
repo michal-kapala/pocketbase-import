@@ -6,9 +6,9 @@ import { CommonCSVReaderOptions } from "https://deno.land/x/csv@v0.8.0/reader.ts
 export type ParserOptions = Partial<CommonCSVReaderOptions>;
 
 /**
- * Raw row object with string properties returned by `csv.readCSVObjects`.
+ * Raw CSV row returned by `csv.readCSVObjects`.
  */
-export type RawRow = {
+export type RawCsvRow = {
   [key: string]: string;
 };
 
@@ -18,4 +18,10 @@ export type RawRow = {
 export type ParsedRow = {
   // deno-lint-ignore no-explicit-any
   [key: string]: any;
+};
+
+export type CsvOptions = {
+  delimiter: string;
+  lf: boolean;
+  quote: string;
 };

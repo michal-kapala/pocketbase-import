@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "name": "john",
+    "is_good": true,
+    "score": 0.8412384213497,
+    "email": "john.doe@example.com",
+    "json": [],
+    "date": "2023-03-05T00:35:21.104Z"
+  },
+  {
+    "id": 2,
+    "name": "fire",
+    "is_good": false,
+    "score": -80347329472,
+    "email": "firebase@google.com",
+    "json": {
+      "xd": "nice meme"
+    },
+    "date": null
+  }
+]

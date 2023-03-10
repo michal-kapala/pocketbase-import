@@ -5,13 +5,13 @@ import PocketBase, {
 } from "https://unpkg.com/pocketbase@0.12.0/dist/pocketbase.es.mjs";
 import "https://deno.land/std@0.178.0/dotenv/load.ts";
 import { parse } from "https://deno.land/std@0.175.0/flags/mod.ts";
-import { parseData, readCsv } from "./utils/csv.ts";
+import { readJson, resolveConflicts } from "./utils/json.ts";
 import { createSchema } from "./utils/pocketbase.ts";
 
 /**
- * Structures and populates a new collection from a CSV file.
+ * Structures and populates a new collection from a JSON file.
  */
-async function importCsv() {
+async function importJson() {
   // config data
   const pbUrl = Deno.env.get("POCKETBASE_URL") ?? "http://localhost:8090";
   const adminName = Deno.env.get("ADMIN_EMAIL") ?? "";
@@ -19,42 +19,30 @@ async function importCsv() {
 
   // parse CLI args
   const options = parse(Deno.args, {
-    string: ["input", "delimiter", "quote"],
-    boolean: ["id", "lf"],
+    string: ["input"],
+    boolean: ["id"],
     default: {
       /**
-       * Name of the CSV file to import.
+       * Name of the JSON file to import (with extension).
        */
       input: null,
-      /**
-       * Value separator (defaults to `,`).
-       */
-      delimiter: ",",
-      /**
-       * Quote character (defaults to `'`).
-       */
-      quote: "'",
       /**
        * Flag to always set `_id` column type to Plain text (detected by default).
        */
       id: false,
-      /**
-       * Whether LF end-of-line should be used (defaults to CRLF).
-       */
-      lf: false,
     },
   });
 
   if (options.input === null) {
-    console.error("%cOptionError: CSV file name not supplied", "color: red");
+    console.error("%cOptionError: JSON file name not supplied", "color: red");
     Deno.exit(-1);
   }
 
   // read the file
-  const data = await readCsv(options.input, options);
+  const data = await readJson(options.input);
 
   // sanitize the file name for collection name
-  const collectName = options.input.replace(".csv", "");
+  const collectName = options.input.replace(".json", "");
 
   // connect to pocketbase
   const pb = new PocketBase(pbUrl);
@@ -63,7 +51,7 @@ async function importCsv() {
   const _authResponse = await pb.admins.authWithPassword(adminName, adminPass);
 
   // collection schema object
-  const schema: SchemaField[] = createSchema(data, options.id, "csv");
+  const schema: SchemaField[] = createSchema(data, options.id, "json");
 
   const creationDate = new Date().toISOString();
 
@@ -95,8 +83,8 @@ async function importCsv() {
     "color: green",
   );
 
-  // rows to be sent via PocketBase API
-  const rows = parseData(data, schema);
+  // prefix conflicting column names
+  const rows = resolveConflicts(data);
 
   console.log(`[Import] Importing ${rows.length} rows...`);
 
@@ -122,4 +110,4 @@ async function importCsv() {
   );
 }
 
-importCsv();
+importJson();

@@ -1,12 +1,12 @@
-import { RawRow } from "../types/csv.ts";
+import { RawCsvRow } from "../types/csv.ts";
 
 /**
  * Checks if the column type could be `Bool`.
- * @param data - Sample data
- * @param prop - Validated property
+ * @param data Sample data.
+ * @param prop Validated property.
  * @returns
  */
-export function isBool(data: RawRow[], prop: string): boolean {
+export function isBool(data: RawCsvRow[], prop: string): boolean {
   const zeroOrOne = /^(0|1)$/;
   const trueOrFalse = /^(true|false)$/;
 
@@ -36,11 +36,11 @@ export function isBool(data: RawRow[], prop: string): boolean {
 
 /**
  * Checks if the column type could be `Number` (integer or floating point).
- * @param data - Sample data
- * @param prop - Validated property
+ * @param data Sample data.
+ * @param prop Validated property.
  * @returns
  */
-export function isNumber(data: RawRow[], prop: string): boolean {
+export function isNumber(data: RawCsvRow[], prop: string): boolean {
   const integer = /^-?[0-9]+$/;
   const float = /^-?[0-9]+\.[0-9]*$/;
 
@@ -66,11 +66,14 @@ export function isNumber(data: RawRow[], prop: string): boolean {
 
 /**
  * Checks if the column type could be `Email`.
- * @param data - Sample data
- * @param prop - Validated property
+ * @param data Sample data.
+ * @param prop Validated property.
  * @returns
  */
-export function isEmail(data: RawRow[], prop: string): boolean {
+export function isEmail(
+  data: { [key: string]: string }[],
+  prop: string,
+): boolean {
   const pattern = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
   let values = 0;
@@ -78,7 +81,9 @@ export function isEmail(data: RawRow[], prop: string): boolean {
 
   data.forEach((obj) => {
     // could be nullable
-    if (obj[prop] !== "") {
+    // - empty strings for CSV
+    // - null values for JSON
+    if (obj[prop] !== "" && obj[prop] !== null) {
       values++;
       if (obj[prop].match(pattern) !== null) {
         matched++;
@@ -92,11 +97,11 @@ export function isEmail(data: RawRow[], prop: string): boolean {
 
 /**
  * Parses the column values as JSON.
- * @param data - Sample data
- * @param prop - Validated property
+ * @param data Sample data.
+ * @param prop Validated property.
  * @returns
  */
-export function isJson(data: RawRow[], prop: string): boolean {
+export function isJson(data: RawCsvRow[], prop: string): boolean {
   let values = 0;
   let parsed = 0;
 
@@ -119,17 +124,22 @@ export function isJson(data: RawRow[], prop: string): boolean {
 
 /**
  * Parses the column values using `Date.parse()`.
- * @param data - Sample data
- * @param prop - Validated property
+ * @param data Sample data.
+ * @param prop Validated property.
  * @returns
  */
-export function isDate(data: RawRow[], prop: string): boolean {
+export function isDate(
+  data: { [key: string]: string }[],
+  prop: string,
+): boolean {
   let values = 0;
   let parsed = 0;
 
   data.forEach((obj) => {
     // could be nullable
-    if (obj[prop] !== "") {
+    // - empty strings for CSV
+    // - null values for JSON
+    if (obj[prop] !== "" && obj[prop] !== null) {
       values++;
       const timestamp = Date.parse(obj[prop]);
       if (!isNaN(timestamp)) {
