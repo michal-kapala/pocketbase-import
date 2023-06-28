@@ -50,6 +50,9 @@ export function getSchemaType(
     case POCKETBASE_TYPE.DATETIME:
       return POCKETBASE_TYPE.DATETIME;
 
+    case POCKETBASE_TYPE.URL:
+      return POCKETBASE_TYPE.URL;
+
     default:
       console.error(
         `%cPbTypeError: Unsupported type '${schemaField.type}'`,
@@ -135,6 +138,18 @@ export function createSchemaField(
         options: {
           min: null,
           max: null,
+        },
+      });
+    case POCKETBASE_TYPE.URL:
+      return new SchemaField({
+        name,
+        type,
+        system: false,
+        required: false,
+        unique: false,
+        options: {
+          exceptDomains: null,
+          onlyDomains: null,
         },
       });
   }

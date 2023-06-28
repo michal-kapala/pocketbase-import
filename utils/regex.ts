@@ -65,6 +65,31 @@ export function isNumber(data: RawCsvRow[], prop: string): boolean {
 }
 
 /**
+ * Checks if the column type could be `Url`.
+ * @param data Sample data.
+ * @param prop Validated property.
+ * @returns 
+ */
+export function isUrl(data: RawCsvRow[], prop: string): boolean {
+  let values = 0;
+  let parsed = 0;
+
+  data.forEach((obj) => {
+    if (obj[prop] !== "" && obj[prop] !== null) {
+      values++;
+      try {
+        new URL(obj[prop]);
+        parsed++;
+      } // deno-lint-ignore no-empty
+      catch {}
+    }
+  });
+
+  // an empty column will return false
+  return parsed === values && parsed > 0;
+}
+
+/**
  * Checks if the column type could be `Email`.
  * @param data Sample data.
  * @param prop Validated property.

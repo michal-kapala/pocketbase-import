@@ -17,7 +17,7 @@ import {
   PocketbaseType,
 } from "../types/pocketbase.ts";
 import { createSchemaField, generateRowSchema } from "./pocketbase.ts";
-import { isBool, isDate, isEmail, isJson, isNumber } from "./regex.ts";
+import { isBool, isDate, isEmail, isJson, isNumber, isUrl } from "./regex.ts";
 
 /**
  * Reads raw data from a CSV file.
@@ -122,6 +122,10 @@ export function addSchemaField(data: RawCsvRow[], prop: string): SchemaField {
     return createSchemaField(targetProp, "date");
   }
 
+  if (isUrl(data, prop)) {
+    return createSchemaField(targetProp, "url");
+  }
+
   // Plain text is the default type
   return createSchemaField(targetProp, "text");
 }
@@ -205,6 +209,8 @@ function parseValue(value: string, type: PocketbaseType): any {
     case POCKETBASE_TYPE.EMAIL:
       return value !== "" ? value : null;
     case POCKETBASE_TYPE.DATETIME:
+      return value !== "" ? value : null;
+    case POCKETBASE_TYPE.URL:
       return value !== "" ? value : null;
     default:
       console.error(

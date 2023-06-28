@@ -3,7 +3,7 @@ import { SchemaField } from "https://unpkg.com/pocketbase@0.12.0/dist/pocketbase
 import { RawJsonRow } from "../types/json.ts";
 import { POCKETBASE_SYSFIELD } from "../types/pocketbase.ts";
 import { createSchemaField } from "./pocketbase.ts";
-import { isDate, isEmail } from "./regex.ts";
+import { isDate, isEmail, isUrl } from "./regex.ts";
 
 /**
  * Reads an array of rows from a JSON file.
@@ -89,6 +89,9 @@ export function addSchemaField(data: RawJsonRow[], prop: string): SchemaField {
     case "bigint":
       return createSchemaField(targetProp, "number");
     case "string":
+      if(isUrl(data, targetProp)) {
+        return createSchemaField(targetProp, "url");
+      }
       if (isEmail(data, targetProp)) {
         return createSchemaField(targetProp, "email");
       }

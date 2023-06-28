@@ -6,7 +6,8 @@
     "score": 0.8412384213497,
     "email": "john.doe@example.com",
     "json": [],
-    "date": "2023-03-05T00:35:21.104Z"
+    "date": "2023-03-05T00:35:21.104Z",
+    "url": "https://example.com"
   },
   {
     "id": 2,
@@ -17,6 +18,7 @@
     "json": {
       "xd": "nice meme"
     },
-    "date": null
+    "date": null,
+    "url": "sftp://fire@8.8.8.8/base.txt"
   }
 ]

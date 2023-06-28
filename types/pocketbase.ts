@@ -8,6 +8,7 @@ export const POCKETBASE_TYPE = {
   EMAIL: "email",
   JSON: "json",
   DATETIME: "date",
+  URL: "url",
 } as const;
 
 type ObjectValues<T> = T[keyof T];
