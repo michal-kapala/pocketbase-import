@@ -25,6 +25,7 @@ PocketBase types are:
 - `Email`
 - `DateTime`
 - `JSON`
+- `Url`
 
 # Configuration
 
@@ -50,7 +51,7 @@ You can change the default import options to your needs:
 | --------- | -------- | -------- | ------------------------------------------------------------------------------------------ | ------------------- |
 | input     | CSV/JSON | Yes      | The name of the input file (with extension)                                                | --input=example.csv |
 | id        | CSV/JSON | No       | Indicates that `_id` column should be typed as plain text, the type is detected by default | --id                |
-| lf        | CSV      | No       | LF (`\n`) EOL character will be used instead of default CLRF (`\r\n`)                      | --lf                |
+| lf        | CSV      | No       | LF (`\n`) EOL character will be used instead of default CRLF (`\r\n`)                      | --lf                |
 | delimiter | CSV      | No       | Column value separator, defaults to `,`                                                    | --delimiter=";"     |
 | quote     | CSV      | No       | Value quote character, defaults to `'`                                                     | --quote="~"         |
 
