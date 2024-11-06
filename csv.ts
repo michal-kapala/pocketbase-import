@@ -1,12 +1,9 @@
-// @deno-types="https://unpkg.com/pocketbase@0.12.0/dist/pocketbase.es.d.mts"
-import PocketBase, {
-  Collection,
-  SchemaField,
-} from "https://unpkg.com/pocketbase@0.12.0/dist/pocketbase.es.mjs";
+import PocketBase from 'pocketbase';
 import "https://deno.land/std@0.178.0/dotenv/load.ts";
 import { parse } from "https://deno.land/std@0.175.0/flags/mod.ts";
 import { parseData, readCsv } from "./utils/csv.ts";
 import { createSchema } from "./utils/pocketbase.ts";
+import { Collection } from "./types/pocketbase.ts";
 
 /**
  * Structures and populates a new collection from a CSV file.
@@ -52,7 +49,11 @@ async function importCsv() {
 
   // read the file
   const data = await readCsv(options.input, options);
-
+  
+  if (data === null) {
+    Deno.exit(-1);
+    return
+  }
   // sanitize the file name for collection name
   const collectName = options.input.replace(".csv", "");
 
@@ -63,25 +64,24 @@ async function importCsv() {
   const _authResponse = await pb.admins.authWithPassword(adminName, adminPass);
 
   // collection schema object
-  const schema: SchemaField[] = createSchema(data, options.id, "csv");
+  const schema = createSchema(data, options.id, "csv");
 
   const creationDate = new Date().toISOString();
 
   // the new collection
-  const collection = new Collection({
+  const collection: Collection = {
     name: collectName,
     type: "base",
     system: false,
     schema,
+    indexes: [],
     listRule: null,
     viewRule: null,
     createRule: null,
     updateRule: null,
     deleteRule: null,
     options: {},
-    created: creationDate,
-    updated: creationDate,
-  });
+  };
 
   // show the submitted collection
   console.log(collection);

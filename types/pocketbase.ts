@@ -33,3 +33,33 @@ export const POCKETBASE_SYSFIELD = [
   "created",
   "updated",
 ];
+
+export type Options = {
+  [key: string]: any;
+};
+
+export type SchemaField = {
+  id?: string;
+  name: string;
+  type: PocketbaseType;
+  required: boolean;
+  system: boolean;
+  presentable: boolean;
+  unique: boolean;
+  options: Options;
+};
+
+export type Collection = {
+  id?: string;
+  name: string;
+  type: string;
+  system: boolean;
+  schema: SchemaField[];
+  indexes: string[];
+  listRule: string | null;
+  viewRule: string |null;
+  createRule: string |null;
+  updateRule: string |null;
+  deleteRule: string |null;
+  options: Options;
+};

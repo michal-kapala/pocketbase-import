@@ -1,5 +1,13 @@
 {
-  "version": "2",
+  "version": "4",
+  "specifiers": {
+    "npm:pocketbase@~0.21.5": "0.21.5"
+  },
+  "npm": {
+    "pocketbase@0.21.5": {
+      "integrity": "sha512-bnI/uinnQps+ElSlzxkc4yvwuSFfKcoszDtXH/4QT2FhGq2mJVUvDlxn+rjRXVntUjPfmMG5LEPZ1eGqV6ssog=="
+    }
+  },
   "remote": {
     "https://deno.land/std@0.164.0/_util/asserts.ts": "d0844e9b62510f89ce1f9878b046f6a57bf88f208a10304aab50efcb48365272",
     "https://deno.land/std@0.164.0/bytes/bytes_list.ts": "aba5e2369e77d426b10af1de0dcc4531acecec27f9b9056f4f7bfbf8ac147ab4",
@@ -8,7 +16,6 @@
     "https://deno.land/std@0.164.0/fmt/colors.ts": "9e36a716611dcd2e4865adea9c4bec916b5c60caad4cdcdc630d4974e6bb8bd4",
     "https://deno.land/std@0.164.0/fs/exists.ts": "6a447912e49eb79cc640adacfbf4b0baf8e17ede6d5bed057062ce33c4fa0d68",
     "https://deno.land/std@0.164.0/io/buffer.ts": "245f1762a949082ddc0a6e9b15589d0be2d29c150266decd04320b8a8318f9f6",
-    "https://deno.land/std@0.164.0/io/types.d.ts": "107e1e64834c5ba917c783f446b407d33432c5d612c4b3430df64fc2b4ecf091",
     "https://deno.land/std@0.164.0/log/handlers.ts": "61ab932822ba268ad42b25de6f0014892fe469df7627b14245ad32db6fd8b54d",
     "https://deno.land/std@0.164.0/log/levels.ts": "82c965b90f763b5313e7595d4ba78d5095a13646d18430ebaf547526131604d1",
     "https://deno.land/std@0.164.0/log/logger.ts": "b545159727b023825ee6814d9178fb2a7472f8d95d704c253b771b95c658cf8c",
@@ -21,10 +28,12 @@
     "https://deno.land/std@0.178.0/dotenv/load.ts": "0636983549b98f29ab75c9a22a42d9723f0a389ece5498fe971e7bb2556a12e2",
     "https://deno.land/std@0.178.0/dotenv/mod.ts": "8dcbc8a40b896a0bf094582aaeadbfc76d3528872faf2efc0302beb1d2f6afd0",
     "https://deno.land/x/csv@v0.8.0/deps.ts": "597e3d0c81eca1c519ce20f0a7ed573d31cfbb5625c5013763550d717ba69dfa",
-    "https://deno.land/x/csv@v0.8.0/mod.ts": "2a13285c8716257aa5d6b5021d45c74dcb275eaaa46776106ddf78b071cabd88",
     "https://deno.land/x/csv@v0.8.0/reader.ts": "ad6543223f8d1c17c78b18dbaa464c3d81f7a0970b08aa5fbde9eb48e2a680d1",
-    "https://deno.land/x/csv@v0.8.0/utils.ts": "7f2467acb031244c150774b9d6caa5e8c40f9857031a947c6ad20765c5d7bd20",
-    "https://deno.land/x/csv@v0.8.0/writer.ts": "18a46b755cc215695862d3a896b3a7b24b33cb7ee626cbebeb7138193cb7edcf",
-    "https://unpkg.com/pocketbase@0.12.0/dist/pocketbase.es.mjs": "bcc669b0d3844523cd8121a75c2ead5e14f1dc9426bcf8904621fc26a75b44c0"
+    "https://deno.land/x/csv@v0.8.0/utils.ts": "7f2467acb031244c150774b9d6caa5e8c40f9857031a947c6ad20765c5d7bd20"
+  },
+  "workspace": {
+    "dependencies": [
+      "npm:pocketbase@~0.21.5"
+    ]
   }
 }

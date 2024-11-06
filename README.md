@@ -29,7 +29,7 @@ PocketBase types are:
 
 # Configuration
 
-Install the latest [Deno runtime](https://deno.land/) to run the scripts.
+Install the latest [Deno runtime](https://deno.com/) to run the scripts.
 
 In the root directory create `.env` file with the following environment
 variables:

@@ -1,11 +1,10 @@
-// @deno-types="https://unpkg.com/pocketbase@0.12.0/dist/pocketbase.es.d.mts"
-import { SchemaField } from "https://unpkg.com/pocketbase@0.12.0/dist/pocketbase.es.mjs";
 import { RawCsvRow } from "../types/csv.ts";
 import { RawJsonRow } from "../types/json.ts";
 import {
   POCKETBASE_TYPE,
   PocketbaseRowSchema,
   PocketbaseType,
+  SchemaField
 } from "../types/pocketbase.ts";
 import { addSchemaField as addCsvSchemaField } from "./csv.ts";
 import { addSchemaField as addJsonSchemaField } from "./json.ts";
@@ -29,6 +28,7 @@ export function getSchemaType(
       "color: red",
     );
     Deno.exit(-1);
+    return "text"
   }
 
   switch (schemaField.type) {
@@ -59,6 +59,7 @@ export function getSchemaType(
         "color: red",
       );
       Deno.exit(-2);
+      return "text"
   }
 }
 
@@ -74,84 +75,94 @@ export function createSchemaField(
 ): SchemaField {
   switch (type) {
     case POCKETBASE_TYPE.BOOL:
-      return new SchemaField({
+      return {
         name,
         type,
         system: false,
         required: false,
+        presentable: false,
         unique: false,
         options: {},
-      });
+      };
     case POCKETBASE_TYPE.NUMBER:
-      return new SchemaField({
+      return {
         name,
         type,
         system: false,
         required: false,
+        presentable: false,
         unique: false,
         options: {
           min: null,
           max: null,
+          noDecimal: false,
         },
-      });
+      };
     case POCKETBASE_TYPE.PLAIN_TEXT:
-      return new SchemaField({
+      return {
         name,
         type,
         system: false,
         required: false,
+        presentable: false,
         unique: false,
         options: {
           min: null,
           max: null,
           pattern: "",
         },
-      });
+      };
     case POCKETBASE_TYPE.EMAIL:
-      return new SchemaField({
+      return {
         name,
         type,
         system: false,
         required: false,
-        unique: false,
-        options: {
-          min: null,
-          max: null,
-        },
-      });
-    case POCKETBASE_TYPE.JSON:
-      return new SchemaField({
-        name,
-        type,
-        system: false,
-        required: false,
-        unique: false,
-        options: {},
-      });
-    case POCKETBASE_TYPE.DATETIME:
-      return new SchemaField({
-        name,
-        type,
-        system: false,
-        required: false,
-        unique: false,
-        options: {
-          min: null,
-          max: null,
-        },
-      });
-    case POCKETBASE_TYPE.URL:
-      return new SchemaField({
-        name,
-        type,
-        system: false,
-        required: false,
+        presentable: false,
         unique: false,
         options: {
           exceptDomains: null,
           onlyDomains: null,
         },
-      });
+      };
+    case POCKETBASE_TYPE.JSON:
+      return {
+        name,
+        type,
+        system: false,
+        required: false,
+        presentable: false,
+        unique: false,
+        options: {
+          maxSize: 2000000
+        },
+      };
+    case POCKETBASE_TYPE.DATETIME:
+      return {
+        name,
+        type,
+        system: false,
+        required: false,
+        presentable: false,
+        unique: false,
+        options: {
+          min: "",
+          max: "",
+        },
+      };
+    case POCKETBASE_TYPE.URL:
+      return {
+        name,
+        type,
+        system: false,
+        required: false,
+        presentable: false,
+        unique: false,
+        options: {
+          exceptDomains: null,
+          onlyDomains: null,
+        },
+      };
   }
 }
 
@@ -182,7 +193,7 @@ export function createSchema(
   data: { [key: string]: any },
   stringifyId: boolean,
   inputFormat: "csv" | "json",
-): SchemaField[] {
+) {
   const schema: SchemaField[] = [];
 
   // Seeks patterns in up to 1k records to avoid poor performance on large datasets

@@ -8,13 +8,12 @@ import {
   ParserOptions,
   RawCsvRow,
 } from "../types/csv.ts";
-// @deno-types="https://unpkg.com/pocketbase@0.12.0/dist/pocketbase.es.d.mts"
-import { SchemaField } from "https://unpkg.com/pocketbase@0.12.0/dist/pocketbase.es.mjs";
 import {
   POCKETBASE_SYSFIELD,
   POCKETBASE_TYPE,
   PocketbaseRowSchema,
   PocketbaseType,
+  SchemaField
 } from "../types/pocketbase.ts";
 import { createSchemaField, generateRowSchema } from "./pocketbase.ts";
 import { isBool, isDate, isEmail, isJson, isNumber, isUrl } from "./regex.ts";
@@ -56,7 +55,7 @@ export async function readCsv(filename: string, options: CsvOptions) {
 async function parseCsv(
   filename: string | null,
   csvOptions: ParserOptions,
-): Promise<RawCsvRow[] | null> {
+) {
   const data: RawCsvRow[] = [];
 
   try {
@@ -85,7 +84,7 @@ async function parseCsv(
  * @param value Raw string value
  * @returns
  */
-export function parseBool(value: string): boolean {
+export function parseBool(value: string) {
   return ["true", "1"].includes(value);
 }
 
@@ -95,7 +94,7 @@ export function parseBool(value: string): boolean {
  * @param prop - Column name
  * @returns `SchemaField`
  */
-export function addSchemaField(data: RawCsvRow[], prop: string): SchemaField {
+export function addSchemaField(data: RawCsvRow[], prop: string) {
   // The new column is prefixed with underscore if it conflicts with a system field
   const targetProp = POCKETBASE_SYSFIELD.includes(prop.toLowerCase())
     ? `_${prop}`
@@ -139,7 +138,7 @@ export function addSchemaField(data: RawCsvRow[], prop: string): SchemaField {
 export function parseData(
   data: RawCsvRow[],
   schema: SchemaField[],
-): ParsedRow[] {
+) {
   const rows: ParsedRow[] = [];
 
   // create a row schema for the collection
@@ -159,7 +158,7 @@ export function parseData(
  * @param schema - Row type template
  * @returns
  */
-function parseRow(rawRow: RawCsvRow, schema: PocketbaseRowSchema): ParsedRow {
+function parseRow(rawRow: RawCsvRow, schema: PocketbaseRowSchema) {
   let parsedRow: ParsedRow = {};
   const keys = Object.keys(rawRow);
 

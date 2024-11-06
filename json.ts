@@ -1,12 +1,9 @@
-// @deno-types="https://unpkg.com/pocketbase@0.12.0/dist/pocketbase.es.d.mts"
-import PocketBase, {
-  Collection,
-  SchemaField,
-} from "https://unpkg.com/pocketbase@0.12.0/dist/pocketbase.es.mjs";
+import PocketBase from 'pocketbase';
 import "https://deno.land/std@0.178.0/dotenv/load.ts";
 import { parse } from "https://deno.land/std@0.175.0/flags/mod.ts";
 import { readJson, resolveConflicts } from "./utils/json.ts";
 import { createSchema } from "./utils/pocketbase.ts";
+import { Collection } from './types/pocketbase.ts'
 
 /**
  * Structures and populates a new collection from a JSON file.
@@ -51,32 +48,29 @@ async function importJson() {
   const _authResponse = await pb.admins.authWithPassword(adminName, adminPass);
 
   // collection schema object
-  const schema: SchemaField[] = createSchema(data, options.id, "json");
-
-  const creationDate = new Date().toISOString();
+  const schema = createSchema(data, options.id, "json");
 
   // the new collection
-  const collection = new Collection({
+  const collection: Collection = {
     name: collectName,
     type: "base",
     system: false,
     schema,
+    indexes: [],
     listRule: null,
     viewRule: null,
     createRule: null,
     updateRule: null,
     deleteRule: null,
     options: {},
-    created: creationDate,
-    updated: creationDate,
-  });
+  };
 
   // show the submitted collection
   console.log(collection);
 
   // create the new collection
   // import will fail if a collection with the same name exists
-  await pb.collections.import([collection]);
+  await pb.collections.import([collection], false);
 
   console.log(
     `%c[Import] Collection '${collectName}' created!`,

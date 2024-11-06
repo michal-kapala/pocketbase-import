@@ -1,5 +1,3 @@
-// @deno-types="https://unpkg.com/pocketbase@0.12.0/dist/pocketbase.es.d.mts"
-import { SchemaField } from "https://unpkg.com/pocketbase@0.12.0/dist/pocketbase.es.mjs";
 import { RawJsonRow } from "../types/json.ts";
 import { POCKETBASE_SYSFIELD } from "../types/pocketbase.ts";
 import { createSchemaField } from "./pocketbase.ts";
@@ -59,7 +57,7 @@ async function parseJson(filename: string) {
  * @param prop Column name.
  * @returns `SchemaField`
  */
-export function addSchemaField(data: RawJsonRow[], prop: string): SchemaField {
+export function addSchemaField(data: RawJsonRow[], prop: string) {
   // The new column is prefixed with underscore if it conflicts with a system field
   const targetProp = POCKETBASE_SYSFIELD.includes(prop.toLowerCase())
     ? `_${prop}`
@@ -111,7 +109,7 @@ export function addSchemaField(data: RawJsonRow[], prop: string): SchemaField {
  * @param data Data rows.
  * @returns
  */
-export function resolveConflicts(data: RawJsonRow[]): RawJsonRow[] {
+export function resolveConflicts(data: RawJsonRow[]) {
   const rows: RawJsonRow[] = [];
 
   for (const r of data) {
