@@ -34,32 +34,69 @@ export const POCKETBASE_SYSFIELD = [
   "updated",
 ];
 
-export type Options = {
-  [key: string]: any;
-};
-
-export type SchemaField = {
+export interface SchemaField {
+  hidden: boolean;
   id?: string;
   name: string;
-  type: PocketbaseType;
+  presentable: boolean;
   required: boolean;
   system: boolean;
-  presentable: boolean;
-  unique: boolean;
-  options: Options;
+  type: PocketbaseType;
 };
 
-export type Collection = {
+export interface BoolField extends SchemaField {
+  type: "bool";
+};
+
+export interface NumberField extends SchemaField {
+  max?: number;
+  min?: number;
+  onlyInt: boolean;
+  type: "number";
+};
+
+export interface TextField extends SchemaField {
+  autogeneratePattern: string;
+  max?: number;
+  min?: number;
+  pattern: string;
+  primaryKey: boolean;
+  type: "text";
+};
+
+export interface EmailField extends SchemaField {
+  exceptDomains?: string[];
+  onlyDomains?: string[];
+  type: "email";
+};
+
+export interface DateField extends SchemaField {
+  max: string;
+  min: string;
+  type: "date";
+}
+
+export interface JsonField extends SchemaField {
+  maxSize: number;
+  type: "json";
+}
+
+export interface UrlField extends SchemaField {
+  exceptDomains?: string[];
+  onlyDomains?: string[];
+  type: "url";
+}
+
+export interface Collection {
   id?: string;
   name: string;
   type: string;
   system: boolean;
-  schema: SchemaField[];
+  fields: SchemaField[];
   indexes: string[];
   listRule: string | null;
-  viewRule: string |null;
-  createRule: string |null;
-  updateRule: string |null;
-  deleteRule: string |null;
-  options: Options;
+  viewRule: string | null;
+  createRule: string | null;
+  updateRule: string | null;
+  deleteRule: string | null;
 };

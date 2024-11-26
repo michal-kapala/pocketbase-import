@@ -1,11 +1,11 @@
 {
   "version": "4",
   "specifiers": {
-    "npm:pocketbase@~0.21.5": "0.21.5"
+    "npm:pocketbase@0.22": "0.22.0"
   },
   "npm": {
-    "pocketbase@0.21.5": {
-      "integrity": "sha512-bnI/uinnQps+ElSlzxkc4yvwuSFfKcoszDtXH/4QT2FhGq2mJVUvDlxn+rjRXVntUjPfmMG5LEPZ1eGqV6ssog=="
+    "pocketbase@0.22.0": {
+      "integrity": "sha512-jhP0Dcf2Z/4q+SNxqpgV+SJWLZeU0rOJA4TKMxwU7X2olFSBr0jhLu+G6Pc+RIQ40IYrC3WMGwbASPrK6rxQOw=="
     }
   },
   "remote": {
@@ -33,7 +33,7 @@
   },
   "workspace": {
     "dependencies": [
-      "npm:pocketbase@~0.21.5"
+      "npm:pocketbase@0.22"
     ]
   }
 }

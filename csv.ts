@@ -64,7 +64,7 @@ async function importCsv() {
   const _authResponse = await pb.admins.authWithPassword(adminName, adminPass);
 
   // collection schema object
-  const schema = createSchema(data, options.id, "csv");
+  const fields = createSchema(data, options.id, "csv");
 
   const creationDate = new Date().toISOString();
 
@@ -73,14 +73,13 @@ async function importCsv() {
     name: collectName,
     type: "base",
     system: false,
-    schema,
+    fields,
     indexes: [],
     listRule: null,
     viewRule: null,
     createRule: null,
     updateRule: null,
     deleteRule: null,
-    options: {},
   };
 
   // show the submitted collection
@@ -96,7 +95,7 @@ async function importCsv() {
   );
 
   // rows to be sent via PocketBase API
-  const rows = parseData(data, schema);
+  const rows = parseData(data, fields);
 
   console.log(`[Import] Importing ${rows.length} rows...`);
 

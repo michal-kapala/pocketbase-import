@@ -48,21 +48,20 @@ async function importJson() {
   const _authResponse = await pb.admins.authWithPassword(adminName, adminPass);
 
   // collection schema object
-  const schema = createSchema(data, options.id, "json");
+  const fields = createSchema(data, options.id, "json");
 
   // the new collection
   const collection: Collection = {
     name: collectName,
     type: "base",
     system: false,
-    schema,
+    fields,
     indexes: [],
     listRule: null,
     viewRule: null,
     createRule: null,
     updateRule: null,
     deleteRule: null,
-    options: {},
   };
 
   // show the submitted collection

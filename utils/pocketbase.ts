@@ -4,7 +4,14 @@ import {
   POCKETBASE_TYPE,
   PocketbaseRowSchema,
   PocketbaseType,
-  SchemaField
+  SchemaField,
+  BoolField,
+  NumberField,
+  TextField,
+  EmailField,
+  JsonField,
+  DateField,
+  UrlField
 } from "../types/pocketbase.ts";
 import { addSchemaField as addCsvSchemaField } from "./csv.ts";
 import { addSchemaField as addJsonSchemaField } from "./json.ts";
@@ -28,39 +35,19 @@ export function getSchemaType(
       "color: red",
     );
     Deno.exit(-1);
-    return "text"
+    return "text";
   }
 
-  switch (schemaField.type) {
-    case POCKETBASE_TYPE.BOOL:
-      return POCKETBASE_TYPE.BOOL;
-
-    case POCKETBASE_TYPE.NUMBER:
-      return POCKETBASE_TYPE.NUMBER;
-
-    case POCKETBASE_TYPE.PLAIN_TEXT:
-      return POCKETBASE_TYPE.PLAIN_TEXT;
-
-    case POCKETBASE_TYPE.EMAIL:
-      return POCKETBASE_TYPE.EMAIL;
-
-    case POCKETBASE_TYPE.JSON:
-      return POCKETBASE_TYPE.JSON;
-
-    case POCKETBASE_TYPE.DATETIME:
-      return POCKETBASE_TYPE.DATETIME;
-
-    case POCKETBASE_TYPE.URL:
-      return POCKETBASE_TYPE.URL;
-
-    default:
-      console.error(
-        `%cPbTypeError: Unsupported type '${schemaField.type}'`,
-        "color: red",
-      );
-      Deno.exit(-2);
-      return "text"
+  if (schemaField.type == null) {
+    console.error(
+      `%cSchemaError: Column type missing for '${column}'`,
+      "color: red",
+    );
+    Deno.exit(-1);
+    return "text";
   }
+
+  return schemaField.type;
 }
 
 /**
@@ -76,93 +63,82 @@ export function createSchemaField(
   switch (type) {
     case POCKETBASE_TYPE.BOOL:
       return {
+        hidden: false,
         name,
-        type,
-        system: false,
-        required: false,
         presentable: false,
-        unique: false,
-        options: {},
-      };
+        required: false,
+        system: false,
+        type,
+      } as BoolField;
     case POCKETBASE_TYPE.NUMBER:
       return {
+        hidden: false,
+        max: undefined,
+        min: undefined,
         name,
-        type,
-        system: false,
-        required: false,
+        onlyInt: false,
         presentable: false,
-        unique: false,
-        options: {
-          min: null,
-          max: null,
-          noDecimal: false,
-        },
-      };
+        required: false,
+        system: false,
+        type,
+      } as NumberField;
     case POCKETBASE_TYPE.PLAIN_TEXT:
       return {
+        autogeneratePattern: "",
+        hidden: false,
+        max: 0,
+        min: 0,
         name,
-        type,
-        system: false,
-        required: false,
+        pattern: "",
         presentable: false,
-        unique: false,
-        options: {
-          min: null,
-          max: null,
-          pattern: "",
-        },
-      };
+        primaryKey: false,
+        required: false,
+        system: false,
+        type,
+      } as TextField;
     case POCKETBASE_TYPE.EMAIL:
       return {
+        exceptDomains: undefined,
+        hidden: false,
         name,
-        type,
-        system: false,
-        required: false,
+        onlyDomains: undefined,
         presentable: false,
-        unique: false,
-        options: {
-          exceptDomains: null,
-          onlyDomains: null,
-        },
-      };
+        required: false,
+        system: false,
+        type,
+      } as EmailField;
     case POCKETBASE_TYPE.JSON:
       return {
+        hidden: false,
+        maxSize: 0,
         name,
-        type,
-        system: false,
-        required: false,
         presentable: false,
-        unique: false,
-        options: {
-          maxSize: 2000000
-        },
-      };
+        required: false,
+        system: false,
+        type,
+      } as JsonField;
     case POCKETBASE_TYPE.DATETIME:
       return {
+        hidden: false,
+        max: "",
+        min: "",
         name,
-        type,
-        system: false,
-        required: false,
         presentable: false,
-        unique: false,
-        options: {
-          min: "",
-          max: "",
-        },
-      };
+        required: false,
+        system: false,
+        type,
+      } as DateField;
     case POCKETBASE_TYPE.URL:
       return {
+        hidden: false,
+        exceptDomains: undefined,
         name,
-        type,
-        system: false,
-        required: false,
+        onlyDomains: undefined,
         presentable: false,
-        unique: false,
-        options: {
-          exceptDomains: null,
-          onlyDomains: null,
-        },
-      };
+        required: false,
+        system: false,
+        type,
+      } as UrlField;
   }
 }
 
