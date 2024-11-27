@@ -43,6 +43,10 @@ Place your import files inside of `input` directory.
 Make sure the target PocketBase instance is running and pointed to by
 `POCKETBASE_URL`.
 
+For versions `>=0.23.2`, enable and configure [batch API](https://pocketbase.io/docs/api-records/#batch-createupdateupsertdelete-records) access - go to *Settings > Application* in PocketBase dashboard (see below). Adjust the parameters to your performance requirements or use the defaults for small/middle-sized datasets.
+
+![Batch API settings](https://github.com/user-attachments/assets/3205bf36-1e86-471b-a1b9-c28c6b118065)
+
 # Options
 
 You can change the default import options to your needs:
