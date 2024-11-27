@@ -55,7 +55,7 @@ async function importCsv() {
     return
   }
   // sanitize the file name for collection name
-  const collectName = options.input.replace(".csv", "");
+  const collectionName = options.input.replace(".csv", "");
 
   // connect to pocketbase
   const pb = new PocketBase(pbUrl);
@@ -70,7 +70,7 @@ async function importCsv() {
 
   // the new collection
   const collection: Collection = {
-    name: collectName,
+    name: collectionName,
     type: "base",
     system: false,
     fields,
@@ -90,7 +90,7 @@ async function importCsv() {
   await pb.collections.import([collection]);
 
   console.log(
-    `%c[Import] Collection '${collectName}' created!`,
+    `%c[Import] Collection '${collectionName}' created!`,
     "color: green",
   );
 
@@ -99,26 +99,25 @@ async function importCsv() {
 
   console.log(`[Import] Importing ${rows.length} rows...`);
 
-  // number of successfully inserted rows
-  let insertCount = 0;
-
-  for (insertCount; insertCount < rows.length; insertCount++) {
-    try {
-      await pb.collection(collectName).create(rows[insertCount], {
-        "$autoCancel": false,
-      });
-    } catch (e) {
-      // breaks on first error
-      console.error(e);
-      break;
+  const batch = pb.createBatch();
+  for (let rowCount = 0; rowCount < rows.length; rowCount++)
+    batch.collection(collectionName).create(rows[rowCount])
+  
+  try {
+    const result = await batch.send();
+    let createdCount = 0;
+    for (const reqRes of result) {
+      if (reqRes.status === 200)
+        createdCount++;
     }
+    const color = createdCount === data.length ? "green" : "orange";
+    console.log(
+      `%c[Import] Imported rows: ${createdCount}/${data.length}`,
+      `color: ${color}`,
+    );
+  } catch(err) {
+    console.error(err);
   }
-
-  const color = insertCount === data.length ? "green" : "orange";
-  console.log(
-    `%c[Import] Imported rows: ${insertCount}/${data.length}`,
-    `color: ${color}`,
-  );
 }
 
 importCsv();

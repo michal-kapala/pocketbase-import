@@ -143,7 +143,6 @@ export function parseData(
 
   // create a row schema for the collection
   const rowSchema = generateRowSchema(schema);
-  console.log("RowSchema", rowSchema);
 
   data.forEach((rawRow) => {
     rows.push(parseRow(rawRow, rowSchema));
