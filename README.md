@@ -51,13 +51,14 @@ For versions `>=0.23.2`, enable and configure [batch API](https://pocketbase.io/
 
 You can change the default import options to your needs:
 
-| Name      | Files    | Required | Description                                                                                | Example use         |
-| --------- | -------- | -------- | ------------------------------------------------------------------------------------------ | ------------------- |
-| input     | CSV/JSON | Yes      | The name of the input file (with extension)                                                | --input=example.csv |
-| id        | CSV/JSON | No       | Indicates that `_id` column should be typed as plain text, the type is detected by default | --id                |
-| lf        | CSV      | No       | LF (`\n`) EOL character will be used instead of default CRLF (`\r\n`)                      | --lf                |
-| delimiter | CSV      | No       | Column value separator, defaults to `,`                                                    | --delimiter=";"     |
-| quote     | CSV      | No       | Value quote character, defaults to `'`                                                     | --quote="~"         |
+| Name      | Files    | Required | Description                                                                                                  | Example use         |
+| --------- | -------- | -------- | ------------------------------------------------------------------------------------------------------------ | ------------------- |
+| input     | CSV/JSON | Yes      | The name of the input file (with extension)                                                                  | --input=example.csv |
+| id        | CSV/JSON | No       | Indicates that `_id` column should be typed as plain text, the type is detected by default                   | --id                |
+| max_batch | CSV/JSON | No       | Max batch request size in rows, should not exceed PocketBase's `Max allowed batch requests`. Defaults to 50. | --max_batch=100     |
+| lf        | CSV      | No       | LF (`\n`) EOL character will be used instead of default CRLF (`\r\n`)                                        | --lf                |
+| delimiter | CSV      | No       | Column value separator, defaults to `,`                                                                      | --delimiter=";"     |
+| quote     | CSV      | No       | Value quote character, defaults to `'`                                                                       | --quote="~"         |
 
 # CSV
 
@@ -72,6 +73,12 @@ Basic import (root directory):
 
 ```
 deno run csv.ts --input=example.csv
+```
+
+Import without permission prompts and with max batch request size of 1 row:
+
+```
+deno run --allow-read --allow-env --allow-net csv.ts --input=example.csv --max_batch=1
 ```
 
 Import without permission prompts and with `_id` column as text:
@@ -96,6 +103,12 @@ Basic import (root directory):
 
 ```
 deno run json.ts --input=example.json
+```
+
+Import without permission prompts and with max batch request size of 1 row:
+
+```
+deno run --allow-read --allow-env --allow-net json.ts --input=example.json --max_batch=1
 ```
 
 Import without permission prompts and with `_id` column as text:
