@@ -3,6 +3,6 @@
     "dev": "deno run --watch main.ts"
   },
   "imports": {
-    "pocketbase": "npm:pocketbase@^0.22.0"
+    "pocketbase": "npm:pocketbase@^0.26.0"
   }
 }
